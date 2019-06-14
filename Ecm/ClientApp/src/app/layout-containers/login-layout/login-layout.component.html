@@ -1,0 +1,37 @@
+<div class="container">
+  <div row margin-top-md>
+    <div class="col-md-12 text-center">
+
+      <div [ngSwitch]="authResult.type">
+        <div *ngSwitchCase="authResultType.Error">
+          <div class="alert alert-danger" role="alert">
+            {{authResult.message}}
+          </div>
+        </div>
+        <div *ngSwitchCase="authResultType.NotAuthorized">
+            <div class="alert alert-warning" role="alert">
+                {{authResult.message}}
+              </div>
+        </div>
+        <div *ngSwitchCase="authResultType.SessionExpired">
+          <div class="alert alert-warning" role="alert">
+              Session Expired
+            </div>
+      </div>
+        <div *ngSwitchDefault>
+            <div class="alert alert-primary" role="alert">
+               Welcome Please Login!
+            </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+
+  <div class="row margin-top-md">
+    <div class="col-md-12 text-center">
+      <button class="btn btn-primary btn-lg" (click)="login()">Login</button>
+    </div>
+  </div>
+</div>

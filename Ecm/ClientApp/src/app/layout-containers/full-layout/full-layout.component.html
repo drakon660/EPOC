@@ -1,0 +1,82 @@
+<header>
+    <nav class='navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3'>
+        <div class="container">
+            <a class="navbar-brand" [routerLink]='["/"]'>EPOC</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                <ul class="navbar-nav flex-grow">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{userName}}
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" [routerLink]="" (click)="logout()">Logout</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h3>ENRICH PEOPLE OR COMPANIES</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="input-group mb-3 display-4">
+                <input type="text" class="form-control" placeholder="entity name space country"
+                    aria-label="Use your imagination" aria-describedby="button-addon2" [(ngModel)]="searchText">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button" id="button-addon2"
+                        (click)="search(searchText)" [disabled]="isbuttonDisabled">Search</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+                <ng-template #customLoadingTemplate>
+                        <div class="alert alert-light" >
+                                Searching...
+                        </div>
+                    </ng-template>
+                <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '3px' }" [template]="customLoadingTemplate"></ngx-loading>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div [ngSwitch]="result.value.status">
+                <div *ngSwitchCase="enrichmentResultStatus.Error">
+                    <div class="alert alert-danger" role="alert">
+                        {{result.value.errorMessage}}
+                    </div>
+                </div>
+                <div *ngSwitchCase="enrichmentResultStatus.NotFound">
+                    <div class="alert alert-warning" role="alert">
+                        No Entity Found
+                    </div>
+                </div>
+                <div *ngSwitchCase="enrichmentResultStatus.Found">
+                    <div class="card" style="width: 18rem;">
+                        <div class="card-body">
+                            <img [src]="result.value.enrichment.logo" class="card-img-top" alt="...">
+                            <h5 class="card-title">{{ result.value.enrichment.name}}</h5>
+                            <h5 class="card-title">{{ result.value.enrichment.isCompany | entity }}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">{{ result.value.enrichment.location}}</h6>
+                            <p class="card-text">{{ result.value.enrichment.info}}</p>
+                            <a href="{{ result.value.enrichment.page}}" class="card-link">Home Page</a>
+                        </div>
+                    </div>
+                </div>
+                <div *ngSwitchDefault>...</div>
+            </div>
+        </div>
+    </div>
+</div>
